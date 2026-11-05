@@ -1,0 +1,50 @@
+services:
+  # Local LLM server
+  ollama:
+    image: ollama/ollama:latest
+    volumes:
+      - ollama_data:/root/.ollama      # models persist across restarts
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+    restart: unless-stopped
+    # NVIDIA GPU (needs the NVIDIA Container Toolkit); uncomment to use:
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+  # One-shot job: downloads the model into the shared volume, then exits
+  model-pull:
+    image: ollama/ollama:latest
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+    entrypoint: ["ollama", "pull", "${MODEL_NAME:-llama3.2}"]
+    restart: "no"
+
+  # The web UI + API
+  app:
+    build: .
+    depends_on:
+      model-pull:
+        condition: service_completed_successfully
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+      MODEL_NAME: ${MODEL_NAME:-llama3.2}
+      HOST: 0.0.0.0                    # listen inside the container
+      PORT: "8001"
+    ports:
+      - "127.0.0.1:8001:8001"          # only reachable from this machine
+    restart: unless-stopped
+
+volumes:
+  ollama_data:
