@@ -1,4 +1,4 @@
-## Run with Docker (recommended)
+## Run with Docker | (Recommended)
 
 ```powershell
 # Windows PowerShell (use `cp` on macOS/Linux)
