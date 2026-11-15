@@ -7,6 +7,8 @@ notepad .env            # fill in API_AUTH_TOKEN and TENANT_ID, save as .env (no
 docker compose up --build
 ```
 
+
+.env.example
 ```notepad
 # Copy to .env (git-ignored) and fill in. Never commit real values.
 # Keep comments on their own lines; do not put them after a value.
