@@ -7,6 +7,25 @@ notepad .env            # fill in API_AUTH_TOKEN and TENANT_ID, save as .env (no
 docker compose up --build
 ```
 
+```notepad
+# Copy to .env (git-ignored) and fill in. Never commit real values.
+# Keep comments on their own lines; do not put them after a value.
+
+# Required: credentials used when the generated request is sent to the product API
+API_AUTH_TOKEN=
+TENANT_ID=
+
+# Ollama model used to segment queries (any model that supports structured output)
+MODEL_NAME=llama3.2
+
+# DEBUG also logs query text. Default INFO.
+LOG_LEVEL=INFO
+
+# Seconds to wait for the model. The first request loads it into memory, which is slow on CPU.
+LLM_TIMEOUT=120
+
+```
+
 The first start downloads the model (about 2 GB), so wait for `model-pull` to finish. Then open
 <http://127.0.0.1:8001>. The port is bound to localhost only.
 
