@@ -17,7 +17,7 @@ download), then `app` (web UI + API). `app` starts only after the model is avail
 - **Different model:** set `MODEL_NAME=...` in `.env`.
 - **Stop / reset:** `docker compose down` (add `-v` to also delete downloaded models).
 
-## Run locally (without Docker)
+## Run locally (Without Docker)
 
 ```bash
 python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\activate
